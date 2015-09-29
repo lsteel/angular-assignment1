@@ -5,6 +5,7 @@
   <meta charset="utf-8">
   <title>Find your representative</title>
   <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="css/main.css" />
   <style>
     body {
       padding-top: 70px;
@@ -45,17 +46,26 @@
       <input
         class="form-control"
         type="text"
-        ng-model="main.input" />
+        ng-model="main.input"
+        ng-disabled="main.loading"
+        ng-change="main.done = false"
+        autofocus />
       <button
         class="btn btn-info"
         ng-click="main.criteria.method(main.input)"
+        ng-disabled="main.loading || !main.input"
         type="submit">
         Submit
       </button>
     </form>
-
+    <div class="alert alert-warning" ng-show="main.reps.length === 0 && !main.loading && main.done" role="alert">
+      <span class="glyphicon glyphicon-exclamation-sign"></span> No Results for {{main.congressType}} for {{main.criteria.label}} {{main.input}}. Format '12345', 'Smith', 'UT', etc
+    </div>
     <ul class="list-group">
-      <li class="list-group-item" ng-repeat="rep in main.reps">
+      <li class="list-group-item" ng-show="main.loading">
+        <span class="glyphicon glyphicon-refresh loading-symbol"></span> Loading
+      </li>
+      <li class="list-group-item" ng-repeat="rep in main.reps" ng-hide="main.loading">
         <h4 class="list-group-item-heading">{{rep.name}}</h4>
         <p>State: {{rep.state}}</p>
       </li>

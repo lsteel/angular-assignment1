@@ -8,14 +8,21 @@ angular
   ])
   .controller('MainCtrl', function (reps) {
     var main = this;
+    main.loading = false;
+    main.done = false;
     main.reps = [];
     main.congressType = 'reps';
+
+    main.loading = false;
 
     main.apis = [
       {
         label: 'Zip',
         method: function (zip) {
+          main.loading = true;
           reps('all', 'zip', zip).then(function (data) {
+            main.loading = false;
+            main.done = true;
             main.reps = data;
           });
         }
@@ -23,7 +30,10 @@ angular
       {
         label: 'Last Name',
         method: function (name) {
+          main.loading = true;
           reps(main.congressType, 'name', name).then(function (data) {
+            main.loading = false;
+            main.done = true;
             main.reps = data;
           });
         }
@@ -31,7 +41,10 @@ angular
       {
         label: 'State',
         method: function (state) {
+          main.loading = true;
           reps(main.congressType, 'state', state).then(function (data) {
+            main.loading = false;
+            main.done = true;
             main.reps = data;
           });
         }
